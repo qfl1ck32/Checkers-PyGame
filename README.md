@@ -15,4 +15,4 @@
  
  # Example
  
- ![checkers](https://user-images.githubusercontent.com/56713436/119268663-991e8900-bbfc-11eb-966b-d610df3ba7b7.gif)
+![checkers](https://user-images.githubusercontent.com/56713436/119268750-04685b00-bbfd-11eb-8a7a-9cfe5a0fa3f6.gif)
