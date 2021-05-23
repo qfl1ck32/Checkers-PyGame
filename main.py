@@ -58,12 +58,14 @@ if __name__ == '__main__':
 
     with_animations: bool = True
 
-    print('Welcome!\n\n')
+    print('\n\nWelcome!\n\n')
 
     game_type = handle_input('Choose the game type:'
                              '\n1. Human vs Human'
                              '\n2. Human vs Computer'
                              '\n3. Computer vs Computer\n> ', 1, 3)
+
+    print()
 
     if game_type == 3:
         player_1_type = player_2_type = PlayerType.COMPUTER
@@ -82,12 +84,16 @@ if __name__ == '__main__':
             player_2_name = 'Computer'
             player_2_type = PlayerType.COMPUTER
 
+            print()
+
             search_alg: int = handle_input('What search algorithm to use for the computer:'
                                            '\n1. Alpha-Beta'
                                            '\n2. Mini-Max\n> ', 1, 2)
 
             if search_alg == 2:
                 use_alpha_beta = False
+
+            print()
 
             difficulty: int = handle_input('Difficulty:'
                                            '\n1. Easy'
@@ -101,6 +107,8 @@ if __name__ == '__main__':
             else:
                 search_alg_depth = 6
 
+        print()
+
         start_first: int = handle_input('Who should start first:'
                                         f'\n1. {player_1_name}'
                                         f'\n2. {player_2_name}\n> ', 1, 2)
@@ -111,6 +119,8 @@ if __name__ == '__main__':
 
             if game_type == 2:
                 flip = True
+
+        print()
 
         animations: int = handle_input('Use animations:'
                                        '\n1. Yes'
