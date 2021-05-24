@@ -437,12 +437,12 @@ class GameEngine:
                                             depth=self.search_algorithm_depth,
                                             alpha=float('-inf'),
                                             beta=float('+inf'),
-                                            maximizing_player=True)
+                                            maximizing_player=False)
 
         else:
             best_moves, _ = self.mini_max(game_state=game_state,
                                           depth=self.search_algorithm_depth,
-                                          maximizing_player=True)
+                                          maximizing_player=False)
 
         self.search_algorithm_number_of_nodes_each_turn.append(self.current_nodes_count)
         self.current_nodes_count = 0
@@ -477,12 +477,17 @@ class GameEngine:
         player_1_king_pieces_count: int = np.size(np.where(board == game_state.current_player.king_piece)) // 2
         player_2_king_pieces_count: int = np.size(np.where(board == game_state.waiting_player.king_piece)) // 2
 
+        evaluation: float
+
         if strong:
-            return player_1_normal_pieces_count + 1.5 * player_1_king_pieces_count - \
+            evaluation = player_1_normal_pieces_count + 1.5 * player_1_king_pieces_count - \
                    player_2_normal_pieces_count - 1.5 * player_2_king_pieces_count
 
-        return player_1_normal_pieces_count + player_1_king_pieces_count - \
+        else:
+            evaluation = player_1_normal_pieces_count + player_1_king_pieces_count - \
                player_2_normal_pieces_count - player_2_king_pieces_count
+
+        return -evaluation if game_state.current_player.type == PlayerType.COMPUTER else evaluation
 
     def alpha_beta(self, game_state: GameState, depth: int, alpha: float, beta: float, maximizing_player: bool) \
             -> tuple[list, float]:
