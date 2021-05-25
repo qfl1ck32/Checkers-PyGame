@@ -81,6 +81,8 @@ class GameEngine:
         """
 
         self.game_state.reset()
+        self.current_nodes_count = 0
+        self.search_algorithm_number_of_nodes_each_turn = list()
 
         if self.flip:
             self.game_state.board = np.flip(self.game_state.board)
