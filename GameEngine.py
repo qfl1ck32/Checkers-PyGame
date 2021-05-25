@@ -457,8 +457,13 @@ class GameEngine:
         """
         Evaluates a state.
 
-        The function is indeed a good estimator, because it returns a positive or negative value, based on
-        the number of remaining pieces - if there are more pieces for the AI, the score will be positive.
+        The function is indeed a good estimator, because:
+
+            evaluation := player_1_pieces - player_2_pieces, with more weight on the kings.
+            If player_1 is human, we return human_pieces - computer_pieces.
+            Else, we return -evaluation <=> computer_pieces - human_pieces.
+
+            Either way, the value will be positive <=> that player has more pieces.
 
         :param game_state: A GameState instance.
         :param strong: A boolean value, representing whether or not to use the strong version of the function
@@ -477,17 +482,13 @@ class GameEngine:
         player_1_king_pieces_count: int = np.size(np.where(board == game_state.current_player.king_piece)) // 2
         player_2_king_pieces_count: int = np.size(np.where(board == game_state.waiting_player.king_piece)) // 2
 
-        evaluation: float
-
-        if strong:
-            evaluation = player_1_normal_pieces_count + 1.5 * player_1_king_pieces_count - \
-                   player_2_normal_pieces_count - 1.5 * player_2_king_pieces_count
-
-        else:
-            evaluation = player_1_normal_pieces_count + player_1_king_pieces_count - \
+        evaluation: float = player_1_normal_pieces_count + player_1_king_pieces_count - \
                player_2_normal_pieces_count - player_2_king_pieces_count
 
-        return -evaluation if game_state.current_player.type == PlayerType.COMPUTER else evaluation
+        if strong:
+            evaluation += 0.2 * (player_1_king_pieces_count - player_2_king_pieces_count)
+
+        return evaluation if self._player_1.type == PlayerType.HUMAN else -evaluation
 
     def alpha_beta(self, game_state: GameState, depth: int, alpha: float, beta: float, maximizing_player: bool) \
             -> tuple[list, float]:
